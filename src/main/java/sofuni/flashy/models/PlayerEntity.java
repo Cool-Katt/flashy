@@ -17,14 +17,14 @@ import java.util.List;
 @Table(name = "players")
 public class PlayerEntity extends BaseEntity
 {
-    @Column(name="email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name="password")
+    @Column(name = "password")
     private String passwordHash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
 
     private List<RoleEntity> roles = new ArrayList<>();
 }
