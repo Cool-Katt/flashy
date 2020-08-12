@@ -1,4 +1,4 @@
-package sofuni.flashy.models;
+package sofuni.flashy.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package sofuni.flashy.models;
+package sofuni.flashy.models.entities;
 
 import lombok.*;
 
@@ -20,7 +20,10 @@ public class PlayerEntity extends BaseEntity
     @Column(name = "password")
     private String passwordHash;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "player_id")
     private List<RoleEntity> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "player")
+    private List<CardDeckEntity> decks = new ArrayList<>();
 }

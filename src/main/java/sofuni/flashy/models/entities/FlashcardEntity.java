@@ -1,4 +1,4 @@
-package sofuni.flashy.models;
+package sofuni.flashy.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Data
@@ -25,4 +26,7 @@ public class FlashcardEntity extends BaseEntity
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToOne
+    private PlayerEntity createdBy;
 }

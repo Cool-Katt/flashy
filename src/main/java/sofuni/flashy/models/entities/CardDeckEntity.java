@@ -1,4 +1,4 @@
-package sofuni.flashy.models;
+package sofuni.flashy.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +21,9 @@ public class CardDeckEntity extends BaseEntity
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "flashcard_id")
+    @JoinColumn(name = "deck_id")
     private List<FlashcardEntity> flashcardEntityList = new ArrayList<>();
+
+    @ManyToOne
+    private PlayerEntity player;
 }
