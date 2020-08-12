@@ -33,22 +33,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 authorizeRequests().
                 requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
                 antMatchers("/login**", "/login-error**", "/registration").permitAll().
-                antMatchers("/**").
-                authenticated().
+                antMatchers("/**").authenticated().
                 and().
                 formLogin().
                 loginPage("/login").
                 loginProcessingUrl("/login/authenticate").
-                failureForwardUrl("/login-error").
-                successForwardUrl("/index").
+                failureForwardUrl("/login-error").successForwardUrl("/index").
                 and().
                 logout().
-                logoutUrl("/logout").
-                logoutSuccessUrl("/login").
-                invalidateHttpSession(true).
-                deleteCookies("JSESSIONID");
+                logoutSuccessUrl("/login?logout").permitAll().
+                invalidateHttpSession(true).deleteCookies("JSESSIONID");
     }
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authManager) throws Exception {
         authManager.
