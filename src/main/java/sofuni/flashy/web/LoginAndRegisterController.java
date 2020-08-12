@@ -1,6 +1,7 @@
 package sofuni.flashy.web;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +17,17 @@ import sofuni.flashy.services.PlayerService;
 import javax.validation.Valid;
 
 @Controller
-public class LoginController
+public class LoginAndRegisterController
 {
     private final PlayerService playerService;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-  public LoginController(PlayerService playerService, ModelMapper modelMapper)
+  public LoginAndRegisterController(PlayerService playerService, ModelMapper modelMapper, PasswordEncoder passwordEncoder)
   {
     this.playerService = playerService;
     this.modelMapper = modelMapper;
+      this.passwordEncoder = passwordEncoder;
   }
 
   @GetMapping("/login")
@@ -60,4 +63,39 @@ public class LoginController
         return modelAndView;
     }
 
+    @GetMapping("/registration")
+    public String showRegister(Model model)
+    {
+        model.addAttribute("formData", new PlayerBindingModel());
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String register(@Valid @ModelAttribute("formData") PlayerBindingModel playerBindingModel,
+                           BindingResult bindingResult)
+    {
+
+        if (bindingResult.hasErrors())
+        {
+            return "registration";
+        }
+
+        if (this.playerService.findPlayer(playerBindingModel.getEmail()) != null)
+        {
+            bindingResult.rejectValue("email", "error.email", "An account with this email already exists.");
+            return "registration";
+        }
+
+        if (!playerBindingModel.getPassword().equals(playerBindingModel.getPasswordConfirm()))
+        {
+            return "registration";
+        }
+
+        PlayerServiceModel playerServiceModel = this.modelMapper.map(playerBindingModel, PlayerServiceModel.class);
+        playerServiceModel.setPasswordHash(this.passwordEncoder.encode(playerBindingModel.getPassword()));
+
+        this.playerService.registerPlayer(playerServiceModel);
+
+        return "redirect:/login";
+    }
 }
