@@ -1,9 +1,6 @@
 package sofuni.flashy.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@Builder
 @Entity
 @Table(name = "players")
 public class PlayerEntity extends BaseEntity
@@ -24,7 +21,6 @@ public class PlayerEntity extends BaseEntity
     private String passwordHash;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-
+    @JoinColumn(name = "player_id")
     private List<RoleEntity> roles = new ArrayList<>();
 }

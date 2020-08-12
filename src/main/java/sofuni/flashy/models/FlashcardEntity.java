@@ -14,9 +14,15 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "roles")
-public class RoleEntity extends BaseEntity
+@Table(name = "flashcards")
+public class FlashcardEntity extends BaseEntity
 {
-    @Column(name = "role", nullable = false)
-    private String role;
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 }
