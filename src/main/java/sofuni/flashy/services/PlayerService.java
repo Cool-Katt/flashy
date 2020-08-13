@@ -10,5 +10,5 @@ public interface PlayerService
 
     PlayerServiceModel loginPlayer(PlayerServiceModel playerServiceModel);
 
-    PlayerServiceModel findPlayer(String email);
+    boolean findPlayer(String email);
 }

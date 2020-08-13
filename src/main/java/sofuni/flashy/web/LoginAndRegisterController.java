@@ -80,7 +80,7 @@ public class LoginAndRegisterController
             return "registration";
         }
 
-        if (this.playerService.findPlayer(playerBindingModel.getEmail()) != null)
+        if (this.playerService.findPlayer(playerBindingModel.getEmail()))
         {
             bindingResult.rejectValue("email", "error.email", "An account with this email already exists.");
             return "registration";

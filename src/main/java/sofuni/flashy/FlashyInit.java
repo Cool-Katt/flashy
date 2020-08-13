@@ -3,6 +3,7 @@ package sofuni.flashy;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import sofuni.flashy.config.BingConfig;
 import sofuni.flashy.services.PlayerService;
 
 @Component

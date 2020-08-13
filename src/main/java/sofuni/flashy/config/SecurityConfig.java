@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import sofuni.flashy.services.impl.UserDetailServiceImpl;
+import sofuni.flashy.services.impl.PlayerServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -17,13 +17,12 @@ import sofuni.flashy.services.impl.UserDetailServiceImpl;
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailServiceImpl flashyUserDetailsService;
+    private final PlayerServiceImpl playerService;
 
-    public SecurityConfig(PasswordEncoder passwordEncoder, UserDetailServiceImpl flashyUserDetailsService)
+    public SecurityConfig(PasswordEncoder passwordEncoder, PlayerServiceImpl playerService)
     {
         this.passwordEncoder = passwordEncoder;
-
-        this.flashyUserDetailsService = flashyUserDetailsService;
+        this.playerService = playerService;
     }
 
     @Override
@@ -41,13 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 failureForwardUrl("/login-error").successForwardUrl("/index").
                 and().
                 logout().
-                logoutSuccessUrl("/login?logout").permitAll().
+                //TODO: logoutSuccessUrl("/logout") put action in html
+                logoutSuccessUrl("/login?logout").
                 invalidateHttpSession(true).deleteCookies("JSESSIONID");
     }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authManager) throws Exception {
         authManager.
-                userDetailsService(flashyUserDetailsService).
-                passwordEncoder(passwordEncoder);
+                userDetailsService(this.playerService).
+                passwordEncoder(this.passwordEncoder);
     }
 }

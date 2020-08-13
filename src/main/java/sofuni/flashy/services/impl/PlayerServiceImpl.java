@@ -3,8 +3,13 @@ package sofuni.flashy.services.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sofuni.flashy.models.entities.PlayerEntity;
@@ -15,22 +20,21 @@ import sofuni.flashy.services.PlayerService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class PlayerServiceImpl implements PlayerService
+public class PlayerServiceImpl implements PlayerService, UserDetailsService
 {
     private final PlayerRepository playerRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailServiceImpl flashyDetailService;
 
     public PlayerServiceImpl(PlayerRepository playerRepository, ModelMapper modelMapper,
-                             PasswordEncoder passwordEncoder, UserDetailServiceImpl flashyDetailService)
+                             PasswordEncoder passwordEncoder)
     {
         this.playerRepository = playerRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
-        this.flashyDetailService = flashyDetailService;
     }
 
     @Override
@@ -39,7 +43,6 @@ public class PlayerServiceImpl implements PlayerService
         PlayerEntity playerEntity = this.modelMapper.map(playerServiceModel, PlayerEntity.class);
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setRole("ROLE_USER");
-
         playerEntity.setRoles(List.of(roleEntity));
         return this.modelMapper.map(this.playerRepository.saveAndFlush(playerEntity), PlayerServiceModel.class);
     }
@@ -50,7 +53,7 @@ public class PlayerServiceImpl implements PlayerService
         Optional<PlayerEntity> playerEntityOptional = this.playerRepository.findByEmail(playerServiceModel.getEmail());
         if (playerEntityOptional.isPresent())
         {
-            UserDetails userDetails =this.flashyDetailService.loadUserByUsername(playerServiceModel.getEmail());
+            UserDetails userDetails =this.loadUserByUsername(playerServiceModel.getEmail());
             Authentication authentication =new UsernamePasswordAuthenticationToken(userDetails,
                     playerServiceModel.getPasswordHash(), userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -62,10 +65,29 @@ public class PlayerServiceImpl implements PlayerService
     }
 
     @Override
-    public PlayerServiceModel findPlayer(String email)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        return this.playerRepository.findByEmail(email)
-                .map(playerEntity -> this.modelMapper.map(playerEntity, PlayerServiceModel.class)).orElse(null);
+        Optional<PlayerEntity> playerEntity = this.playerRepository.findByEmail(username);
+        return playerEntity.map(this::map).orElseThrow(() -> new UsernameNotFoundException("No such user: " + username));
+    }
+
+    private User map(PlayerEntity playerEntity) {
+        List<GrantedAuthority> authorities = playerEntity.
+                getRoles().
+                stream().
+                map(r -> new SimpleGrantedAuthority(r.getRole())).
+                collect(Collectors.toList());
+
+        return new User(
+                playerEntity.getEmail(),
+                playerEntity.getPasswordHash(),
+                authorities);
+    }
+
+    @Override
+    public boolean findPlayer(String email)
+    {
+        return this.playerRepository.findByEmail(email).isPresent();
     }
 
     @Override
