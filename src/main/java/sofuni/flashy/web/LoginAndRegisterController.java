@@ -1,5 +1,6 @@
 package sofuni.flashy.web;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -16,19 +17,13 @@ import sofuni.flashy.services.PlayerService;
 
 import javax.validation.Valid;
 
+@AllArgsConstructor
 @Controller
 public class LoginAndRegisterController
 {
     private final PlayerService playerService;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-
-    public LoginAndRegisterController(PlayerService playerService, ModelMapper modelMapper, PasswordEncoder passwordEncoder)
-    {
-        this.playerService = playerService;
-        this.modelMapper = modelMapper;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @GetMapping("/login")
     public String showLogin(Model model)
@@ -87,7 +82,7 @@ public class LoginAndRegisterController
             return "registration";
         }
 
-        if (this.playerService.findPlayer(playerBindingModel.getEmail()) != null)
+        if (this.playerService.findPlayer(playerBindingModel.getEmail()) == null)
         {
             bindingResult.rejectValue("email", "error.email", "An account with this email already exists.");
             return "registration";

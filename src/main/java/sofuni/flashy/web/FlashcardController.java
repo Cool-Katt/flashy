@@ -1,5 +1,6 @@
 package sofuni.flashy.web;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,18 +20,13 @@ import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/flashcard")
 public class FlashcardController
 {
     private final FlashcardService flashcardService;
     private final ModelMapper modelMapper;
-
-    public FlashcardController(FlashcardService flashcardService, ModelMapper modelMapper)
-    {
-        this.flashcardService = flashcardService;
-        this.modelMapper = modelMapper;
-    }
 
     @GetMapping("/add")
     public String showAddCard(Model model)
@@ -50,7 +46,7 @@ public class FlashcardController
         FlashcardServiceModel flashcardServiceModel = this.modelMapper.map(flashcardBindingModel, FlashcardServiceModel.class);
         if (this.flashcardService.addFlashcard(flashcardServiceModel, principal) != null)
         {
-            return "index";
+            return "redirect:/list";
         } else
         {
             return "new";
