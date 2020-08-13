@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PlayerServiceModel
+public class FlashcardServiceModel
 {
-    private String email;
-    private String passwordHash;
+    private String title;
+    private String description;
+    private String imageURL;
 }

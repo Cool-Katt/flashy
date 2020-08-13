@@ -44,6 +44,7 @@ public class PlayerServiceImpl implements PlayerService, UserDetailsService
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setRole("ROLE_USER");
         playerEntity.setRoles(List.of(roleEntity));
+
         return this.modelMapper.map(this.playerRepository.saveAndFlush(playerEntity), PlayerServiceModel.class);
     }
 
@@ -53,8 +54,8 @@ public class PlayerServiceImpl implements PlayerService, UserDetailsService
         Optional<PlayerEntity> playerEntityOptional = this.playerRepository.findByEmail(playerServiceModel.getEmail());
         if (playerEntityOptional.isPresent())
         {
-            UserDetails userDetails =this.loadUserByUsername(playerServiceModel.getEmail());
-            Authentication authentication =new UsernamePasswordAuthenticationToken(userDetails,
+            UserDetails userDetails = this.loadUserByUsername(playerServiceModel.getEmail());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails,
                     playerServiceModel.getPasswordHash(), userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return this.modelMapper.map(playerEntityOptional, PlayerServiceModel.class);
@@ -71,7 +72,8 @@ public class PlayerServiceImpl implements PlayerService, UserDetailsService
         return playerEntity.map(this::map).orElseThrow(() -> new UsernameNotFoundException("No such user: " + username));
     }
 
-    private User map(PlayerEntity playerEntity) {
+    private User map(PlayerEntity playerEntity)
+    {
         List<GrantedAuthority> authorities = playerEntity.
                 getRoles().
                 stream().
@@ -85,9 +87,9 @@ public class PlayerServiceImpl implements PlayerService, UserDetailsService
     }
 
     @Override
-    public boolean findPlayer(String email)
+    public PlayerServiceModel findPlayer(String email)
     {
-        return this.playerRepository.findByEmail(email).isPresent();
+        return this.modelMapper.map(this.playerRepository.findByEmail(email), PlayerServiceModel.class);
     }
 
     @Override

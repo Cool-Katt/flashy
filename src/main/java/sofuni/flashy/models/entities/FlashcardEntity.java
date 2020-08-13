@@ -26,7 +26,4 @@ public class FlashcardEntity extends BaseEntity
 
     @Column(name = "image_url")
     private String imageUrl;
-
-    @OneToOne
-    private PlayerEntity createdBy;
 }

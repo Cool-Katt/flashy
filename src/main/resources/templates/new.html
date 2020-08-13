@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+
+<div class="container center">
+    <div class="card">
+        <article class="card-body">
+            <form th:action="@{/flashcard/add}" method="POST" th:object="${formData}">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input
+                            name="title"
+                            th:errorclass="is-invalid"
+                            type="text"
+                            placeholder="Title"
+                            class="form-control"
+                            id="title"/>
+                    <div class="invalid-feedback">
+                        Ass should not exist in the system.
+                    </div>
+                </div>
+                <!-- form-group// -->
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input
+                            name="description"
+                            type="text"
+                            th:errorclass="is-invalid"
+                            placeholder="Description"
+                            class="form-control"
+                            id="description"/>
+                </div> <!-- form-group// -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Add this card</button>
+                        </div> <!-- form-group// -->
+                    </div>
+                </div> <!-- .row// -->
+            </form>
+        </article>
+    </div> <!-- card.// -->
+
+</div>
+</body>
+</html>

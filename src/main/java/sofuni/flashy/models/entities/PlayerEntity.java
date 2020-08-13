@@ -24,6 +24,7 @@ public class PlayerEntity extends BaseEntity
     @JoinColumn(name="player_id")
     private List<RoleEntity> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "player")
-    private List<CardDeckEntity> decks = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "player_id")
+    private List<FlashcardEntity> deck = new ArrayList<>();
 }

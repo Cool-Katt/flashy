@@ -23,14 +23,14 @@ public class LoginAndRegisterController
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-  public LoginAndRegisterController(PlayerService playerService, ModelMapper modelMapper, PasswordEncoder passwordEncoder)
-  {
-    this.playerService = playerService;
-    this.modelMapper = modelMapper;
-      this.passwordEncoder = passwordEncoder;
-  }
+    public LoginAndRegisterController(PlayerService playerService, ModelMapper modelMapper, PasswordEncoder passwordEncoder)
+    {
+        this.playerService = playerService;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-  @GetMapping("/login")
+    @GetMapping("/login")
     public String showLogin(Model model)
     {
         model.addAttribute("formData", new PlayerBindingModel());
@@ -41,12 +41,19 @@ public class LoginAndRegisterController
     private String login(@Valid @ModelAttribute("formData") PlayerBindingModel playerBindingModel,
                          BindingResult bindingResult)
     {
-      PlayerServiceModel playerServiceModel = this.modelMapper.map(playerBindingModel, PlayerServiceModel.class);
-      if (this.playerService.loginPlayer(playerServiceModel) != null)
-      {
-          return "index";
-      }
-      return "login";
+        if (bindingResult.hasErrors())
+        {
+            return "redirect:/login";
+        }
+
+        PlayerServiceModel playerServiceModel = this.modelMapper.map(playerBindingModel, PlayerServiceModel.class);
+        if (this.playerService.loginPlayer(playerServiceModel) != null)
+        {
+            return "index";
+        } else
+        {
+            return "login";
+        }
     }
 
     @PostMapping("/login-error")
@@ -80,7 +87,7 @@ public class LoginAndRegisterController
             return "registration";
         }
 
-        if (this.playerService.findPlayer(playerBindingModel.getEmail()))
+        if (this.playerService.findPlayer(playerBindingModel.getEmail()) != null)
         {
             bindingResult.rejectValue("email", "error.email", "An account with this email already exists.");
             return "registration";
