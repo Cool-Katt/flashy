@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class BingConfig
 {
-    private final String subscriptionKey = "f650449ec1e240108cae9c64efc20378";
-    String searchTerm = "the moon is very far";
-
     public String findImageURL(String searchTerm)
     {
         final String subscriptionKey = "f650449ec1e240108cae9c64efc20378";
