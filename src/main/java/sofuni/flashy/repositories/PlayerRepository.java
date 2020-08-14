@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface PlayerRepository extends JpaRepository<PlayerEntity, Long>
 {
     Optional<PlayerEntity> findByEmail(String email);
+
+    void deleteByEmail(String email);
 }

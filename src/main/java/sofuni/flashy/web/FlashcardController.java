@@ -67,7 +67,13 @@ public class FlashcardController
     {
         List<FlashcardBindingModel> list = this.flashcardService.listPlayerCards(principal).stream()
                 .map(l -> this.modelMapper.map(l, FlashcardBindingModel.class)).collect(Collectors.toList());
-        model.addAttribute("formDataAll", list.get((int) (Math.random()*list.size())));
-        return "list";
+        if (list.size() > 0)
+        {
+            model.addAttribute("formDataAll", list.get((int) (Math.random() * list.size())));
+        } else
+        {
+            //todo: tell user to add cards first
+        }
+        return "redirect:/list";
     }
 }

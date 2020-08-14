@@ -12,4 +12,5 @@ public interface PlayerService
 
     PlayerServiceModel findPlayer(String email);
 
+    void deleteByEmail(String email);
 }

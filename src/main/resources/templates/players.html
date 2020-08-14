@@ -16,6 +16,13 @@
                 <div class="col-10">
                     <span th:text="*{email}">Name</span>
                 </div>
+                <form
+                        id="formDelete"
+                        th:action="@{/admin/delete}"
+                        th:method="delete">
+                    <input id="deleteId" th:name="email" th:value="*{email}" type="hidden" value=""/>
+                    <button id="btnDelete" type="submit" class="btn btn-primary">Delete</button>
+                </form>
             </div>
         </div>
     </div>

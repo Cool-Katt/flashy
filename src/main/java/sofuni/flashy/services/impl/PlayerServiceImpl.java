@@ -13,6 +13,7 @@ import sofuni.flashy.models.serviceModels.PlayerServiceModel;
 import sofuni.flashy.repositories.PlayerRepository;
 import sofuni.flashy.services.PlayerService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +65,17 @@ public class PlayerServiceImpl implements PlayerService
     public PlayerServiceModel findPlayer(String email)
     {
         return this.modelMapper.map(this.playerRepository.findByEmail(email), PlayerServiceModel.class);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByEmail(String email)
+    {
+        PlayerEntity playerEntity = this.playerRepository.findByEmail(email).orElse(null);
+        if (playerEntity != null && !"admin@example.com".equals(email))
+        {
+            this.playerRepository.deleteByEmail(email);
+        }
     }
 
     @Override
