@@ -10,6 +10,7 @@ import sofuni.flashy.repositories.FlashcardRepository;
 import sofuni.flashy.repositories.PlayerRepository;
 import sofuni.flashy.services.FlashcardService;
 
+import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,5 +58,15 @@ public class FlashcardServiceImpl implements FlashcardService
                     .map(l->this.modelMapper.map(l, FlashcardServiceModel.class)).collect(Collectors.toList());
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public void deleteCardByTitle(String title)
+    {
+        if (this.flashcardRepository.findByTitle(title).isPresent())
+        {
+            this.flashcardRepository.deleteByTitle(title);
+        }
     }
 }

@@ -36,9 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 failureForwardUrl("/login-error").successForwardUrl("/index").
                 and().
                 logout().
-                //TODO: logoutSuccessUrl("/logout") put action in html
-                logoutSuccessUrl("/login?logout").
-                invalidateHttpSession(true).deleteCookies("JSESSIONID");
+                logoutUrl("/logout").
+                logoutSuccessUrl("/login").
+                invalidateHttpSession(true).deleteCookies("JSESSIONID").
+                and().csrf().disable();
     }
 
     @Autowired

@@ -12,4 +12,6 @@ public interface FlashcardService
     List<FlashcardServiceModel> listAllCards();
 
     List<FlashcardServiceModel> listPlayerCards(Principal principal);
+
+    void deleteCardByTitle(String title);
 }

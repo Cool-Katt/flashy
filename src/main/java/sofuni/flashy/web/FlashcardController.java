@@ -4,10 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import sofuni.flashy.config.IsAdmin;
+import sofuni.flashy.config.IsUser;
 import sofuni.flashy.models.bindingModels.FlashcardBindingModel;
 import sofuni.flashy.models.serviceModels.FlashcardServiceModel;
 import sofuni.flashy.services.FlashcardService;
@@ -30,6 +29,7 @@ public class FlashcardController
         this.modelMapper = modelMapper;
     }
 
+    @IsUser
     @GetMapping("/add")
     public String showAddCard(Model model)
     {
@@ -37,8 +37,9 @@ public class FlashcardController
         return "new";
     }
 
+    @IsUser
     @PostMapping("/add")
-    private String addCard(@Valid @ModelAttribute("formData") FlashcardBindingModel flashcardBindingModel,
+    public String addCard(@Valid @ModelAttribute("formData") FlashcardBindingModel flashcardBindingModel,
                            BindingResult bindingResult, Principal principal)
     {
         if (bindingResult.hasErrors())
@@ -55,15 +56,17 @@ public class FlashcardController
         }
     }
 
+    @IsUser
     @GetMapping("/list")
-    private String listAll(Model model)
+    public String listAll(Model model)
     {
         model.addAttribute("formDataAll", this.flashcardService.listAllCards());
         return "list";
     }
 
+    @IsUser
     @GetMapping("/list-player")
-    private String listPlayerCards(Model model, Principal principal)
+    public String listPlayerCards(Model model, Principal principal)
     {
         List<FlashcardBindingModel> list = this.flashcardService.listPlayerCards(principal).stream()
                 .map(l -> this.modelMapper.map(l, FlashcardBindingModel.class)).collect(Collectors.toList());
@@ -74,6 +77,14 @@ public class FlashcardController
         {
             //todo: tell user to add cards first
         }
-        return "redirect:/list";
+        return "redirect:/flashcard/list";
+    }
+
+    @IsAdmin
+    @DeleteMapping("/delete")
+    public String delete(@ModelAttribute(name = "deleteId") String deleteId)
+    {
+        this.flashcardService.deleteCardByTitle(deleteId);
+        return "redirect:/flashcard/list";
     }
 }
