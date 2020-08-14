@@ -1,6 +1,5 @@
 package sofuni.flashy.web;
 
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,24 +8,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import sofuni.flashy.models.bindingModels.FlashcardBindingModel;
 import sofuni.flashy.models.serviceModels.FlashcardServiceModel;
 import sofuni.flashy.services.FlashcardService;
-import sofuni.flashy.services.PlayerService;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Controller
 @RequestMapping("/flashcard")
 public class FlashcardController
 {
     private final FlashcardService flashcardService;
     private final ModelMapper modelMapper;
+
+    public FlashcardController(FlashcardService flashcardService, ModelMapper modelMapper)
+    {
+        this.flashcardService = flashcardService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping("/add")
     public String showAddCard(Model model)

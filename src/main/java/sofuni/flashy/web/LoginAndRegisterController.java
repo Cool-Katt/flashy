@@ -1,6 +1,5 @@
 package sofuni.flashy.web;
 
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -17,13 +16,19 @@ import sofuni.flashy.services.PlayerService;
 
 import javax.validation.Valid;
 
-@AllArgsConstructor
 @Controller
 public class LoginAndRegisterController
 {
     private final PlayerService playerService;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+
+    public LoginAndRegisterController(PlayerService playerService, ModelMapper modelMapper, PasswordEncoder passwordEncoder)
+    {
+        this.playerService = playerService;
+        this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping("/login")
     public String showLogin(Model model)
