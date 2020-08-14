@@ -44,12 +44,12 @@ public class FlashcardController
     {
         if (bindingResult.hasErrors())
         {
-            return "redirect:/add";
+            return "redirect:/flashcard/add";
         }
         FlashcardServiceModel flashcardServiceModel = this.modelMapper.map(flashcardBindingModel, FlashcardServiceModel.class);
         if (this.flashcardService.addFlashcard(flashcardServiceModel, principal) != null)
         {
-            return "redirect:/list";
+            return "redirect:/flashcard/list";
         } else
         {
             return "new";
@@ -73,11 +73,11 @@ public class FlashcardController
         if (list.size() > 0)
         {
             model.addAttribute("formDataAll", list.get((int) (Math.random() * list.size())));
+            return "list";
         } else
         {
-            //todo: tell user to add cards first
+            return "redirect:/flashcard/add";
         }
-        return "redirect:/flashcard/list";
     }
 
     @IsAdmin

@@ -55,7 +55,7 @@ public class FlashcardServiceImpl implements FlashcardService
         if (playerEntity != null)
         {
             return playerEntity.getDeck().stream()
-                    .map(l->this.modelMapper.map(l, FlashcardServiceModel.class)).collect(Collectors.toList());
+                    .map(l -> this.modelMapper.map(l, FlashcardServiceModel.class)).collect(Collectors.toList());
         }
         return null;
     }

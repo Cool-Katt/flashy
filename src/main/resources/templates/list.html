@@ -25,6 +25,12 @@
         <div class="card-body">
             <img class="card-text" th:src="*{imageURL}" alt="">
         </div>
+            <form id="formAdd"
+                  th:action="@{/flashcard/add-existing}"
+                  th:method="post">
+                <input id="addId" th:name="title" th:value="*{title}" type="hidden" value=""/>
+                <button id="btnAdd" type="submit" class="btn btn-primary">Add</button>
+            </form>
         <div sec:authorize="hasRole('ADMIN')">
             <form id="formDelete"
                   th:action="@{/flashcard/delete}"
