@@ -16,6 +16,6 @@ import javax.persistence.Table;
 @Table(name = "scoreboards")
 public class ScoreboardEntity extends BaseEntity
 {
-   private Long playerId;
+   private String playerName;
    private Long place;
 }

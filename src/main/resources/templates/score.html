@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="my-2 d-flex justify-content-center">
+    <h2>Scoreboard</h2>
+</div>
+<div class="container">
+    <div th:object="${f}" th:each="f: ${scoreboard}"
+         class="my-3 border-secondary card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between">
+                <div class="col-10">
+                    <span th:text="*{playerName}">Title</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p th:text="*{place}" class="card-text"></p>
+        </div>
+    </div>
+</div>
+</body>
