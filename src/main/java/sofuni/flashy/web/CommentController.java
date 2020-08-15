@@ -47,6 +47,6 @@ public class CommentController
                              BindingResult bindingResult, Principal principal)
     {
         this.commentService.addComment(commentServiceModel.getComment(), principal);
-        return "redirect:/comments/list-comments";
+        return "redirect:/comments/list";
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -20,19 +20,22 @@
         </div>
         <div class="card-body">
             <h5 class="card-title"></h5>
-            <p th:text="*{description}" class="card-text"></p>
+            <p id="demo"></p>
+            <button th:data="*{description}" type="button" onclick="func(this.getAttribute('data'))">Show me the description</button>
         </div>
         <div class="card-body">
             <img class="card-text" th:src="*{imageURL}" alt="">
         </div>
-        <div sec:authorize="hasRole('ADMIN')">
-            <form id="formDelete"
-                  th:action="@{/flashcard/delete}"
-                  th:method="delete">
-                <input id="deleteId" th:name="deleteId" th:value="*{title}" type="hidden" value=""/>
-                <button id="btnDelete" type="submit" class="btn btn-primary">Delete</button>
+        <div>
+            <form th:action="@{/flashcard/list-player}" th:method="get">
+                <button type="submit">Next</button>
             </form>
         </div>
+        <script>
+            function func(description) {
+                document.getElementById("demo").innerHTML = description;
+            }
+        </script>
     </div>
 </div>
 </body>

@@ -73,7 +73,7 @@ public class FlashcardController
         if (list.size() > 0)
         {
             model.addAttribute("formDataAll", list.get((int) (Math.random() * list.size())));
-            return "list";
+            return "list-player-deck";
         } else
         {
             return "redirect:/flashcard/add";
