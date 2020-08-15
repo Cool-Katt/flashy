@@ -45,7 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder authManager) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder authManager) throws Exception
+    {
         authManager.
                 userDetailsService(this.playerService).
                 passwordEncoder(this.passwordEncoder);

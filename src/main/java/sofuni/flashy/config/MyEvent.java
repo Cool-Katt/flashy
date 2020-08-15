@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationEvent;
 public class MyEvent extends ApplicationEvent
 {
     private String msg;
+
     /**
      * Create a new {@code ApplicationEvent}.
      *

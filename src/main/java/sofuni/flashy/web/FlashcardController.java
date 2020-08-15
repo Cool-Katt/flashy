@@ -40,7 +40,7 @@ public class FlashcardController
     @IsUser
     @PostMapping("/add")
     public String addCard(@Valid @ModelAttribute("formData") FlashcardBindingModel flashcardBindingModel,
-                           BindingResult bindingResult, Principal principal)
+                          BindingResult bindingResult, Principal principal)
     {
         if (bindingResult.hasErrors())
         {

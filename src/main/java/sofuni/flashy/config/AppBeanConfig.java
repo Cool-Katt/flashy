@@ -19,12 +19,14 @@ public class AppBeanConfig
     }
 
     @Bean
-    public PasswordEncoder createPasswordEncoder(){
+    public PasswordEncoder createPasswordEncoder()
+    {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public ApplicationEventMulticaster simpleApplicationEventMulticaster() {
+    public ApplicationEventMulticaster simpleApplicationEventMulticaster()
+    {
         SimpleApplicationEventMulticaster eventMulticaster =
                 new SimpleApplicationEventMulticaster();
 

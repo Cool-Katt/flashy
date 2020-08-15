@@ -21,7 +21,7 @@ public class PlayerEntity extends BaseEntity
     private String passwordHash;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name="player_id")
+    @JoinColumn(name = "player_id")
     private List<RoleEntity> roles = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

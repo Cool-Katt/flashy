@@ -2,7 +2,6 @@ package sofuni.flashy.config;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-import sofuni.flashy.services.ScoreboardService;
 
 @Component
 public class MyEventPublisher

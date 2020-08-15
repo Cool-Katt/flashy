@@ -31,7 +31,8 @@ public class UserDetailServiceImpl implements UserDetailsService
         return playerEntity.map(this::map).orElseThrow(() -> new UsernameNotFoundException("No such user: " + username));
     }
 
-    private User map(PlayerEntity playerEntity) {
+    private User map(PlayerEntity playerEntity)
+    {
         List<GrantedAuthority> authorities = playerEntity.
                 getRoles().
                 stream().
