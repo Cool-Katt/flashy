@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import sofuni.flashy.config.IsUser;
-import sofuni.flashy.models.bindingModels.FlashcardBindingModel;
 import sofuni.flashy.models.serviceModels.CommentServiceModel;
 import sofuni.flashy.services.CommentService;
 
@@ -48,11 +47,6 @@ public class CommentController
                              BindingResult bindingResult, Principal principal)
     {
         this.commentService.addComment(commentServiceModel.getComment(), principal);
-        if (bindingResult.hasErrors())
-        {
-            return "redirect:/comments/add";
-        }
-
         return "redirect:/comments/list-comments";
     }
 }
